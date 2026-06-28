@@ -109,6 +109,23 @@ void Update(GameState& state) {
     }
 }
 
+void Render(GameState& state) {
+    // Black background
+    SDL_SetRenderDrawColor(state.renderer, 0, 0, 0, 255); 
+    SDL_RenderClear(state.renderer);
+
+    // Red food
+    SDL_SetRenderDrawColor(state.renderer, 255, 0, 0, 255); 
+    SDL_RenderFillRect(state.renderer, &state.food);
+
+    // Green snake
+    SDL_SetRenderDrawColor(state.renderer, 0, 255, 0, 255); 
+    for (const auto& segment : state.snake) {
+        SDL_RenderFillRect(state.renderer, &segment);
+    }
+
+    SDL_RenderPresent(state.renderer);
+}
 
 void ShowScoreboard(GameState& state) {
     // REQUIREMENT 5: Scoreboard Pop-up at the end 
@@ -137,8 +154,15 @@ int main(int argc, char* argv[]) {
         if (state.running) {
             Update(state);
         }
+        
+        if (state.running) {
+            Render(state);
+            // REQUIREMENT 2: Less Speed 
+            SDL_Delay(150); 
+        }
+    }
+
     ShowScoreboard(state);
     Cleanup(state);
     return 0;
-}
 }

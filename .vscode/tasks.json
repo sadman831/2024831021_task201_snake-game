@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "Build C++ with SDL2",
+            "command": "g++",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                
+               "-I", "D:\\sadman\\SDL2\\SDL2-2.32.6\\x86_64-w64-mingw32\\include",
+"-L", "D:\\sadman\\SDL2\\SDL2-2.32.6\\x86_64-w64-mingw32\\lib",
+                "-lmingw32",
+                "-lSDL2main",
+                "-lSDL2"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compiler command to build SDL2 project"
+        }
+    ]
+}
