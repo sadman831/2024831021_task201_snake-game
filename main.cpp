@@ -166,3 +166,7 @@ int main(int argc, char* argv[]) {
     Cleanup(state);
     return 0;
 }
+//sadman
+// git add .
+// git commit -m "Initial commit of Snake Game with requirements implemented"
+// git push -u origin main
