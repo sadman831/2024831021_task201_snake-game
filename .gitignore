@@ -1,0 +1,3 @@
+*.exe
+MinGW/
+SDL2/
