@@ -1,9 +1,7 @@
-#include<SDL2/SDL.h>
-#include<iostream>
-#include<deque>
-#include<string>
-#include<cstdlib>
-#include<ctime>
+#include <SDL2/SDL.h>
+#include <bits/stdc++.h>
+
+using namespace std;
 
 const int SCREEN_WIDTH = 840;
 const int SCREEN_HEIGHT = 600;
@@ -18,7 +16,7 @@ struct GameState {
     bool running = true;
     Direction dir = RIGHT;
     int score = 0;
-    std::deque<SDL_Rect> snake;
+    deque<SDL_Rect> snake;
     SDL_Rect food;
 };
 
@@ -32,7 +30,7 @@ void SpawnFood(GameState& state) {
 
 bool Initialize(GameState& state) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cout << "SDL Initialization Error: " << SDL_GetError() << std::endl;
+        cout << "SDL Initialization Error: " << SDL_GetError() << endl;
         return false;
     }
 
@@ -99,7 +97,7 @@ void Update(GameState& state) {
     // REQUIREMENT 4: Eaten food counts as score 
     if (newHead.x == state.food.x && newHead.y == state.food.y) {
         state.score += 10;
-        std::string title = "Snake Game | Live Score: " + std::to_string(state.score);
+        string title = "Snake Game | Live Score: " + to_string(state.score);
         SDL_SetWindowTitle(state.window, title.c_str());
         SpawnFood(state);
     } 
@@ -129,7 +127,7 @@ void Render(GameState& state) {
 
 void ShowScoreboard(GameState& state) {
     // REQUIREMENT 5: Scoreboard Pop-up at the end 
-    std::string scoreboardText = "Ooh! Game Over.\n\nYour Final Score: " + std::to_string(state.score) + "\n\nPress OK to exit.";
+    string scoreboardText = "Ooh! Game Over.\n\nYour Final Score: " + to_string(state.score) + "\n\nPress OK to exit.";
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Snake Scoreboard", scoreboardText.c_str(), state.window);
 }
 
@@ -166,7 +164,3 @@ int main(int argc, char* argv[]) {
     Cleanup(state);
     return 0;
 }
-//sadman
-// git add .
-// git commit -m "Initial commit of Snake Game with requirements implemented"
-// git push -u origin main
