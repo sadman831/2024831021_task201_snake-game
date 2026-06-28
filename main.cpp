@@ -71,6 +71,45 @@ void ProcessInput(GameState& state) {
     }
 }
 
+void Update(GameState& state) {
+    SDL_Rect newHead = state.snake.front();
+    
+    if (state.dir == UP)    newHead.y -= GRID_SIZE;
+    if (state.dir == DOWN)  newHead.y += GRID_SIZE;
+    if (state.dir == LEFT)  newHead.x -= GRID_SIZE;
+    if (state.dir == RIGHT) newHead.x += GRID_SIZE;
+
+    // REQUIREMENT 3: Clash with wall ends the game
+    if (newHead.x < 0 || newHead.x >= SCREEN_WIDTH || newHead.y < 0 || newHead.y >= SCREEN_HEIGHT) {
+        state.running = false; 
+        return;
+    }
+
+    // Clash with own body ends the game
+    for (const auto& segment : state.snake) {
+        if (newHead.x == segment.x && newHead.y == segment.y) {
+            state.running = false;
+            return;
+        }
+    }
+
+    // Add new head position
+    state.snake.push_front(newHead);
+
+    // REQUIREMENT 4: Eaten food counts as score 
+    if (newHead.x == state.food.x && newHead.y == state.food.y) {
+        state.score += 10;
+        std::string title = "Snake Game | Live Score: " + std::to_string(state.score);
+        SDL_SetWindowTitle(state.window, title.c_str());
+        SpawnFood(state);
+    } 
+    else {
+        // Remove tail if no food was eaten
+        state.snake.pop_back(); 
+    }
+}
+
+
 void ShowScoreboard(GameState& state) {
     // REQUIREMENT 5: Scoreboard Pop-up at the end 
     std::string scoreboardText = "Ooh! Game Over.\n\nYour Final Score: " + std::to_string(state.score) + "\n\nPress OK to exit.";
@@ -94,9 +133,12 @@ int main(int argc, char* argv[]) {
     // Main Game Loop
     while (state.running) {
         ProcessInput(state);
-    }
-
+        
+        if (state.running) {
+            Update(state);
+        }
     ShowScoreboard(state);
     Cleanup(state);
     return 0;
+}
 }
